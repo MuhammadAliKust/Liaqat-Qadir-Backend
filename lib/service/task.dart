@@ -7,7 +7,7 @@ class TaskService {
   //create Task
   Future createTask(TaskModel model) async {
     return await FirebaseFirestore.instance
-        .collection(taskList)
+        .collection('taskCollection')
         .add(model.toJson());
   }
 
