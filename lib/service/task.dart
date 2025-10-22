@@ -18,7 +18,7 @@ class TaskService {
   //update Task
   Future updateTask(TaskModel model) async {
     return await FirebaseFirestore.instance
-        .collection(taskList)
+        .collection('taskCollection')
         .doc(model.docId)
         .update({"title": model.title, "description": model.description});
   }

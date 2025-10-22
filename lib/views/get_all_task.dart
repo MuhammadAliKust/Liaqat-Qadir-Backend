@@ -4,6 +4,7 @@ import 'package:liaqat_qadir_backend/service/task.dart';
 import 'package:liaqat_qadir_backend/views/create_task.dart';
 import 'package:liaqat_qadir_backend/views/get_completed_task.dart';
 import 'package:liaqat_qadir_backend/views/get_incompleted_task.dart';
+import 'package:liaqat_qadir_backend/views/update_task.dart';
 import 'package:provider/provider.dart';
 
 class GetAllTaskView extends StatelessWidget {
@@ -83,6 +84,12 @@ class GetAllTaskView extends StatelessWidget {
                           ).showSnackBar(SnackBar(content: Text(e.toString())));
                         }
                       },
+                    ),
+                    IconButton(
+                      onPressed: () async {
+                       Navigator.push(context, MaterialPageRoute(builder: (context)=>UpdateTaskView(model: taskList[i])));
+                      },
+                      icon: Icon(Icons.edit, color: Colors.blue),
                     ),
                     IconButton(
                       onPressed: () async {
