@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:liaqat_qadir_backend/models/task.dart';
 import 'package:liaqat_qadir_backend/service/task.dart';
 import 'package:liaqat_qadir_backend/views/create_task.dart';
+import 'package:liaqat_qadir_backend/views/get_all_priority.dart';
 import 'package:liaqat_qadir_backend/views/get_completed_task.dart';
 import 'package:liaqat_qadir_backend/views/get_incompleted_task.dart';
 import 'package:liaqat_qadir_backend/views/update_task.dart';
@@ -17,6 +18,15 @@ class GetAllTaskView extends StatelessWidget {
         title: Text("Get All Task"),
 
         actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => GetAllPriorityView()),
+              );
+            },
+            icon: Icon(Icons.category),
+          ),
           IconButton(
             onPressed: () {
               Navigator.push(

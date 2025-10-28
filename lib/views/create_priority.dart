@@ -4,57 +4,25 @@ import 'package:liaqat_qadir_backend/models/task.dart';
 import 'package:liaqat_qadir_backend/service/priority.dart';
 import 'package:liaqat_qadir_backend/service/task.dart';
 
-class CreateTaskView extends StatefulWidget {
-  CreateTaskView({super.key});
+class CreatePriorityView extends StatefulWidget {
+  CreatePriorityView({super.key});
 
   @override
-  State<CreateTaskView> createState() => _CreateTaskViewState();
+  State<CreatePriorityView> createState() => _CreatePriorityViewState();
 }
 
-class _CreateTaskViewState extends State<CreateTaskView> {
+class _CreatePriorityViewState extends State<CreatePriorityView> {
   TextEditingController titleController = TextEditingController();
 
-  TextEditingController descriptionController = TextEditingController();
-
   bool isLoading = false;
-
-  List<PriorityModel> priorityList = [];
-
-  PriorityModel? selectedPriority;
-  @override
-  void initState() {
-    PriorityServices().getAllPriorities().first.then((val) {
-      priorityList = val;
-      setState(() {});
-    });
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Create Task")),
+      appBar: AppBar(title: Text("Create Priorit")),
       body: Column(
         children: [
           TextField(controller: titleController),
-          TextField(controller: descriptionController),
-          DropdownButton(
-            items: priorityList
-                .map(
-                  (e) => DropdownMenuItem(
-                    child: Text(e.name.toString()),
-                    value: e,
-                  ),
-                )
-                .toList(),
-            onChanged: (val) {
-              selectedPriority = val;
-              setState(() {});
-            },
-            value: selectedPriority,
-            isExpanded: true,
-            hint: Text("Select Priority"),
-          ),
           SizedBox(height: 20),
           isLoading
               ? Center(child: CircularProgressIndicator())
@@ -66,28 +34,14 @@ class _CreateTaskViewState extends State<CreateTaskView> {
                       );
                       return;
                     }
-                    if (descriptionController.text.isEmpty) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text("Description cannot be empty.")),
-                      );
-                      return;
-                    }
-                    if (selectedPriority == null) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text("Please select priority.")),
-                      );
-                      return;
-                    }
                     try {
                       isLoading = true;
                       setState(() {});
-                      TaskService()
-                          .createTask(
-                            TaskModel(
-                              title: titleController.text,
-                              description: descriptionController.text,
-                              isCompleted: false,
-                              priorityID: selectedPriority!.docId.toString(),
+                      PriorityServices()
+                          .createPriority(
+                            PriorityModel(
+                              name: titleController.text,
+
                               createdAt: DateTime.now().millisecondsSinceEpoch,
                             ),
                           )
@@ -100,7 +54,7 @@ class _CreateTaskViewState extends State<CreateTaskView> {
                                 return AlertDialog(
                                   title: Text("Message"),
                                   content: Text(
-                                    "Task has been created successfully.",
+                                    "Prioirity has been created successfully.",
                                   ),
                                   actions: [
                                     TextButton(
@@ -123,7 +77,7 @@ class _CreateTaskViewState extends State<CreateTaskView> {
                       ).showSnackBar(SnackBar(content: Text(e.toString())));
                     }
                   },
-                  child: Text("Create Task"),
+                  child: Text("Create Priority"),
                 ),
         ],
       ),
