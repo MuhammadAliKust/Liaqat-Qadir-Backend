@@ -4,6 +4,7 @@ import 'package:liaqat_qadir_backend/service/task.dart';
 import 'package:liaqat_qadir_backend/views/create_task.dart';
 import 'package:liaqat_qadir_backend/views/get_all_priority.dart';
 import 'package:liaqat_qadir_backend/views/get_completed_task.dart';
+import 'package:liaqat_qadir_backend/views/get_favorite_tasks.dart';
 import 'package:liaqat_qadir_backend/views/get_incompleted_task.dart';
 import 'package:liaqat_qadir_backend/views/update_task.dart';
 import 'package:provider/provider.dart';
@@ -47,6 +48,17 @@ class GetAllTaskView extends StatelessWidget {
             },
             icon: Icon(Icons.incomplete_circle),
           ),
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => GetFavoriteTasks(),
+                ),
+              );
+            },
+            icon: Icon(Icons.favorite),
+          ),
         ],
       ),
       floatingActionButton: FloatingActionButton(
@@ -73,6 +85,22 @@ class GetAllTaskView extends StatelessWidget {
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
+                    IconButton(
+                      onPressed: () async {
+                        if (taskList[i].favorite!.contains('1')) {
+                          await TaskService().removeFromFavorite(
+                            taskID: taskList[i].docId.toString(),
+                            userID: '1',
+                          );
+                        }else{
+                           await TaskService().addToFavorite(
+                            taskID: taskList[i].docId.toString(),
+                            userID: '1',
+                          );
+                        }
+                      },
+                      icon: Icon(taskList[i].favorite!.contains('1')?Icons.favorite: Icons.favorite_outline, color: Colors.red),
+                    ),
                     Checkbox(
                       value: taskList[i].isCompleted,
                       onChanged: (val) async {
@@ -97,7 +125,13 @@ class GetAllTaskView extends StatelessWidget {
                     ),
                     IconButton(
                       onPressed: () async {
-                       Navigator.push(context, MaterialPageRoute(builder: (context)=>UpdateTaskView(model: taskList[i])));
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                UpdateTaskView(model: taskList[i]),
+                          ),
+                        );
                       },
                       icon: Icon(Icons.edit, color: Colors.blue),
                     ),
