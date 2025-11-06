@@ -4,7 +4,6 @@ import 'package:liaqat_qadir_backend/models/user.dart';
 class UserServices {
   ///Create User
   Future createUser(UserModel model) async {
-   
     return await FirebaseFirestore.instance
         .collection('userCollection')
         .doc(model.docId)
@@ -19,6 +18,18 @@ class UserServices {
         .get()
         .then((val) {
           return UserModel.fromJson(val.data()!);
+        });
+  }
+
+  ///Update Profile
+  Future updateProfile(UserModel model) async {
+    return await FirebaseFirestore.instance
+        .collection('userCollection')
+        .doc(model.docId)
+        .update({
+          'name': model.name,
+          'phone': model.phone,
+          'address': model.address,
         });
   }
 }
